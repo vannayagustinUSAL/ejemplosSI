@@ -1,0 +1,17 @@
+const int vibrationPin = 2;
+const int ledPin = 13;
+
+void setup() {
+  pinMode(vibrationPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int vibrationState = digitalRead(vibrationPin);
+
+  if (vibrationState == HIGH) {
+    digitalWrite(ledPin, HIGH);  // Encender el LED si se detecta una vibración
+  } else {
+    digitalWrite(ledPin, LOW);  // Apagar el LED si no se detecta una vibración
+  }
+}
