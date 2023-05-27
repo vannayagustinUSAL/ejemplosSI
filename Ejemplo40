@@ -1,0 +1,31 @@
+const int smokePin = 2;
+const int tempPin = A0;
+const int buzzerPin = 3;
+const int ledPin = 4;
+
+void setup() {
+  pinMode(smokePin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int smokeValue = digitalRead(smokePin);
+  float tempValue = analogRead(tempPin) * 0.48875855;  // Conversión de valor analógico a temperatura en grados Celsius
+
+  Serial.print("Temperatura: ");
+  Serial.print(tempValue);
+  Serial.print(" °C | Humo detectado: ");
+  Serial.println(smokeValue);
+
+  if (smokeValue == HIGH || tempValue >= 50.0) {  // Si se detecta humo o la temperatura supera los 50 grados Celsius
+    digitalWrite(buzzerPin, HIGH);  // Activar alarma (buzzer)
+    digitalWrite(ledPin, HIGH);  // Encender LED (opcional)
+  } else {
+    digitalWrite(buzzerPin, LOW);  // Desactivar alarma (buzzer)
+    digitalWrite(ledPin, LOW);  // Apagar LED (opcional)
+  }
+
+  delay(1000);  // Esperar 1 segundo antes de realizar la siguiente lectura
+}
