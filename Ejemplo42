@@ -1,0 +1,52 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <LiquidCrystal_I2C.h>
+
+#define ONE_WIRE_BUS 2  // Pin para el bus OneWire
+
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // Dirección I2C y tamaño de la pantalla LCD
+
+const int relayPin = 3;
+const int upButtonPin = 4;
+const int downButtonPin = 5;
+const float targetTemperature = 25.0;  // Temperatura de referencia
+
+void setup() {
+  lcd.begin(16, 2);  // Inicialización de la pantalla LCD
+  lcd.backlight();  // Encender la retroiluminación de la pantalla LCD
+
+  sensors.begin();  // Inicialización del sensor de temperatura
+  pinMode(relayPin, OUTPUT);
+  pinMode(upButtonPin, INPUT_PULLUP);
+  pinMode(downButtonPin, INPUT_PULLUP);
+}
+
+void loop() {
+  sensors.requestTemperatures();  // Obtener la temperatura actual del sensor
+  float currentTemperature = sensors.getTempCByIndex(0);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
+  lcd.print(currentTemperature);
+  lcd.print(" C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Target: ");
+  lcd.print(targetTemperature);
+  lcd.print(" C");
+
+  if (currentTemperature < targetTemperature) {
+    digitalWrite(relayPin, HIGH);  // Encender el actuador de calefacción o refrigeración
+  } else {
+    digitalWrite(relayPin, LOW);  // Apagar el actuador de calefacción o refrigeración
+  }
+
+  if (digitalRead(upButtonPin) == LOW) {
+    targetTemperature += 1.0;  // Incrementar la temperatura de referencia
+    delay(200);  // Debounce para el botón
+  }
+
+  if (digital
