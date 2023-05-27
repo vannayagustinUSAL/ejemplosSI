@@ -1,0 +1,50 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <DS3231.h>
+
+#define OLED_ADDR 0x3C  // Dirección I2C de la pantalla OLED
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+DS3231 rtc(SDA, SCL);
+
+void setup() {
+  Wire.begin();
+  rtc.begin();
+  display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+  display.setTextSize(2);
+}
+
+void loop() {
+  DateTime now = rtc.now();
+  float temperature = getTemperature();
+
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.print(now.hour());
+  display.print(":");
+  display.println(now.minute());
+  display.setTextSize(1);
+  display.print(now.day());
+  display.print("/");
+  display.print(now.month());
+  display.print("/");
+  display.println(now.year());
+  display.setTextSize(2);
+  display.print("Temp: ");
+  display.print(temperature);
+  display.println(" C");
+  display.display();
+
+  delay(1000);  // Actualizar cada segundo
+}
+
+float getTemperature() {
+  // Código para leer la temperatura del sensor DS18B20
+  // Debes implementar esta función según las especificaciones del sensor que estés utilizando
+  // Asegúrate de incluir las bibliotecas necesarias y seguir las instrucciones del fabricante
+}
