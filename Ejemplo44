@@ -1,0 +1,49 @@
+const int flowPin = 2;
+const int ledPin1 = 3;  // LED para el nivel 1
+const int ledPin2 = 4;  // LED para el nivel 2
+const int ledPin3 = 5;  // LED para el nivel 3
+const int ledPin4 = 6;  // LED para el nivel 4
+const int ledPin5 = 7;  // LED para el nivel 5
+
+void setup() {
+  pinMode(flowPin, INPUT);
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  pinMode(ledPin4, OUTPUT);
+  pinMode(ledPin5, OUTPUT);
+}
+
+void loop() {
+  int flow = pulseIn(flowPin, HIGH);  // Medir el flujo de agua
+
+  if (flow > 0) {
+    // Determinar el nivel de agua según el flujo medido
+    if (flow < 20) {
+      turnOffAllLEDs();
+      digitalWrite(ledPin1, HIGH);
+    } else if (flow < 40) {
+      turnOffAllLEDs();
+      digitalWrite(ledPin2, HIGH);
+    } else if (flow < 60) {
+      turnOffAllLEDs();
+      digitalWrite(ledPin3, HIGH);
+    } else if (flow < 80) {
+      turnOffAllLEDs();
+      digitalWrite(ledPin4, HIGH);
+    } else {
+      turnOffAllLEDs();
+      digitalWrite(ledPin5, HIGH);
+    }
+  } else {
+    turnOffAllLEDs();
+  }
+}
+
+void turnOffAllLEDs() {
+  digitalWrite(ledPin1, LOW);
+  digitalWrite(ledPin2, LOW);
+  digitalWrite(ledPin3, LOW);
+  digitalWrite(ledPin4, LOW);
+  digitalWrite(ledPin5, LOW);
+}
