@@ -1,0 +1,19 @@
+const int doorPin = 2;
+const int buzzerPin = 3;
+
+void setup() {
+  pinMode(doorPin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
+}
+
+void loop() {
+  int doorState = digitalRead(doorPin);
+
+  if (doorState == HIGH) {
+    // Puerta abierta
+    tone(buzzerPin, 1000);  // Generar un tono de alarma
+    delay(500);  // Esperar medio segundo
+    noTone(buzzerPin);  // Detener el tono de alarma
+    delay(500);  // Esperar medio segundo
+  }
+}
