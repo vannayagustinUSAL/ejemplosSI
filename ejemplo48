@@ -1,0 +1,18 @@
+const int potPin = A0;
+const int buzzerPin = 3;
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+}
+
+void loop() {
+  int sensorValue = analogRead(potPin);  // Lee el valor del potenciómetro
+
+  // Convierte el valor leído en una frecuencia audible para el zumbador
+  int frequency = map(sensorValue, 0, 1023, 50, 2000);
+
+  // Genera el tono correspondiente en el zumbador
+  tone(buzzerPin, frequency);
+
+  delay(10);  // Pequeña pausa para estabilizar el tono
+}
