@@ -1,0 +1,23 @@
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // Dirección I2C y tamaño de la pantalla LCD
+
+const int gasPin = A0;
+
+void setup() {
+  lcd.begin(16, 2);  // Inicialización de la pantalla LCD
+  lcd.backlight();  // Encender la retroiluminación de la pantalla LCD
+  lcd.setCursor(0, 0);
+  lcd.print("Calidad del Aire:");
+  pinMode(gasPin, INPUT);
+}
+
+void loop() {
+  float gasValue = analogRead(gasPin);  // Lectura del valor analógico del sensor de gas
+
+  lcd.setCursor(0, 1);
+  lcd.print("Valor: ");
+  lcd.print(gasValue);
+
+  delay(1000);  // Esperar 1 segundo antes de realizar la siguiente lectura
+}
