@@ -1,0 +1,35 @@
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_TSL2561_U.h>
+#include <Servo.h>
+
+Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
+
+Servo servo;
+
+void setup() {
+  Serial.begin(9600);
+
+  if (!tsl.begin()) {
+    Serial.println("No se pudo inicializar el sensor TSL2561");
+    while (1);
+  }
+
+  servo.attach(9);
+  servo.write(90);  // Posición inicial del servo
+
+  tsl.enableAutoRange(true);
+  tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_13MS);
+}
+
+void loop() {
+  sensors_event_t event;
+  tsl.getEvent(&event);
+
+  if (event.light) {
+    int angle = map(event.light, 0, 5000, 0, 180);  // Mapear la intensidad de luz a un ángulo para el servo
+    servo.write(angle);
+  }
+
+  delay(1000);  // Esperar 1 segundo antes de realizar la siguiente lectura
+}
