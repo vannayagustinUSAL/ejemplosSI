@@ -1,0 +1,30 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // Dirección I2C y tamaño del LCD
+
+const int soundPin = A0;
+
+void setup() {
+  lcd.begin(16, 2);  // Inicializar el LCD
+  lcd.backlight();  // Encender la retroiluminación
+
+  lcd.print("Nivel de Sonido");
+  lcd.setCursor(0, 1);
+  lcd.print("dB");
+  delay(2000);  // Mostrar el mensaje de inicio por 2 segundos
+
+  lcd.clear();  // Limpiar la pantalla
+}
+
+void loop() {
+  int soundValue = analogRead(soundPin);  // Leer el valor del sensor de sonido
+
+  lcd.setCursor(0, 0);
+  lcd.print("Nivel: ");
+
+  lcd.setCursor(7, 0);
+  lcd.print(soundValue);
+
+  delay(500);  // Actualizar la lectura cada 0.5 segundos
+}
